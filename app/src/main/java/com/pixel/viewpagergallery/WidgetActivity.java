@@ -26,7 +26,7 @@ public class WidgetActivity extends AppCompatActivity {
         }
 
         mPagerGalleryView = (PagerGalleryView) findViewById(R.id.pagerGalleryView);
-        mPagerGalleryView.setDataSource(false, stringList, new PagerGalleryView.OnPagerCallback() {
+        mPagerGalleryView.setDataSource(true, stringList, new PagerGalleryView.OnPagerCallback() {
 
             @Override
             public View onCreateView(ViewGroup parent, Object dataSource) {

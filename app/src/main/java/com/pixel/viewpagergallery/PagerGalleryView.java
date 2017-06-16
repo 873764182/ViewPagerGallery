@@ -100,7 +100,7 @@ public class PagerGalleryView extends FrameLayout {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) { // 触碰边缘时让ViewPager滚动到指定Item
                     downX = event.getX();
                     downY = event.getY();
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
