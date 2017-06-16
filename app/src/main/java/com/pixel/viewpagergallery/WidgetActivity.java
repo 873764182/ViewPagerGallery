@@ -10,6 +10,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 使用自定义控件,抽离业务无关代码.
+ */
 public class WidgetActivity extends AppCompatActivity {
 
     private PagerGalleryView mPagerGalleryView;
