@@ -25,10 +25,10 @@ import java.util.Map;
  */
 
 public class PagerGalleryView extends FrameLayout {
-    // 缩放宽高基准大小 水平
-    public static final int baseWidthPadding = 80;
-    // 缩放宽高基准大小 竖直
-    public static final int baseHeightPadding = 160;
+    // 缩放宽高基准大小 水平 缩放为正常宽度的85%
+    public float baseZoomWidth = 0.15f;
+    // 缩放宽高基准大小 竖直 缩放为正常高度的85%
+    public float baseZoomHeight = 0.15f;
     // 缓存ViewPager的子View
     private final Map<Integer, View> mViewCache = new Hashtable<>();
     // ViewPager子View创建接口
@@ -97,7 +97,6 @@ public class PagerGalleryView extends FrameLayout {
         this.addView(mViewPager);
         this.setOnTouchListener(new OnTouchListener() {
             float downX, downY;
-            float upX, upY;
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -123,12 +122,12 @@ public class PagerGalleryView extends FrameLayout {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             if (mViewCache.get(position) != null) {
-                int ohp = (int) (positionOffset * baseHeightPadding);
-                int owp = (int) (positionOffset * baseWidthPadding);
+                int ohp = (int) (positionOffset * baseZoomHeight * pagerWidth);
+                int owp = (int) (positionOffset * baseZoomWidth * pagerHeight);
                 mViewCache.get(position).setPadding(owp, ohp, owp, ohp);
             }
-            int iwp = (int) ((1 - positionOffset) * baseWidthPadding);
-            int ihp = (int) ((1 - positionOffset) * baseHeightPadding);
+            int iwp = (int) ((1 - positionOffset) * baseZoomWidth * pagerWidth);
+            int ihp = (int) ((1 - positionOffset) * baseZoomHeight * pagerHeight);
             if (mViewCache.get(position + 1) != null) {
                 mViewCache.get(position + 1).setPadding(iwp, ihp, iwp, ihp);
             }
@@ -167,7 +166,9 @@ public class PagerGalleryView extends FrameLayout {
                     tempPosition = position % mDataSourceList.size();
                 }
                 item = mOnPagerCallback.onCreateView(mViewPager, mDataSourceList.get(tempPosition));
-                item.setPadding(baseWidthPadding, baseHeightPadding, baseWidthPadding, baseHeightPadding);
+                int w = (int) (baseZoomWidth * pagerWidth);
+                int h = (int) (baseZoomHeight * pagerHeight);
+                item.setPadding(w, h, w, h);
                 final int finalTempPosition = tempPosition;
                 item.setOnClickListener(new OnClickListener() {
                     @Override
@@ -211,6 +212,21 @@ public class PagerGalleryView extends FrameLayout {
             this.mDataSourceList = (List<Object>) dataSourceList;
         } else {
             throw new ClassCastException("dataSourceList 必须是列表类型 List");
+        }
+    }
+
+    /**
+     * 设置缩放的等级 设置区间: 0.0 - 1.0
+     *
+     * @param baseZoomWidth  在宽度上的缩放等级
+     * @param baseZoomHeight 在高度上的缩放等级
+     */
+    public void setBaseZoom(float baseZoomWidth, float baseZoomHeight) {
+        if (baseZoomWidth > 0.0f && baseZoomWidth < 1.0f) {
+            this.baseZoomWidth = 1.0f - baseZoomWidth;
+        }
+        if (baseZoomHeight > 0.0f && baseZoomHeight < 1.0f) {
+            this.baseZoomHeight = 1.0f - baseZoomHeight;
         }
     }
 
