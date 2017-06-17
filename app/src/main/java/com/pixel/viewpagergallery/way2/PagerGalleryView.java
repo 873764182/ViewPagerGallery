@@ -25,10 +25,10 @@ import java.util.Map;
  */
 
 public class PagerGalleryView extends FrameLayout {
-    // 缩放宽高基准大小 水平 缩放为正常宽度的85%
-    public float baseZoomWidth = 0.15f;
-    // 缩放宽高基准大小 竖直 缩放为正常高度的85%
-    public float baseZoomHeight = 0.15f;
+    // 缩放宽高基准大小 水平 缩放为正常宽度的98%
+    public float baseZoomWidth = 0.02f;
+    // 缩放宽高基准大小 竖直 缩放为正常高度的8%
+    public float baseZoomHeight = 0.2f;
     // 缓存ViewPager的子View
     private final Map<Integer, View> mViewCache = new Hashtable<>();
     // ViewPager子View创建接口

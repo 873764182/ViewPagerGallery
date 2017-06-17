@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -32,8 +33,6 @@ public class RecyclerGalleryView extends FrameLayout {
     private int mLayoutWidth, mLayoutHeight, mRecyclerWidth, mRecyclerHeight;
     // 对应的RecyclerView控件
     private RecyclerView mRecyclerView;
-    // 缓存item view
-    private final Map<Integer, RecyclerView.ViewHolder> mViewCache = new Hashtable<>();
     // 数据源
     private List<Object> mDataSourceList = new ArrayList<>();
     // 列表适配器
@@ -99,59 +98,87 @@ public class RecyclerGalleryView extends FrameLayout {
 
         this.addView(mRecyclerView);
 
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                if (mCycleRolling) {
-                    mShowPosition = mDataSourceList.size() / 2 +
-                            (Integer.MAX_VALUE / 2 - (Integer.MAX_VALUE / 2 % mDataSourceList.size())); // 计算让让ViewPager默认显示中间的Item
-                } else {
-                    mShowPosition = mDataSourceList.size() / 2;
-                }
-
-                layoutManager.scrollToPositionWithOffset(mShowPosition, 0); // 如果是循环滚动模式则定位到中间位置
-                layoutManager.setStackFromEnd(true);
-
-                ViewGroup itemView =
-                        (ViewGroup) mRecyclerView.getLayoutManager().findViewByPosition(mShowPosition + 1);
-                if (itemView == null) {
-                    return;
-                }
-                View child = itemView.getChildAt(0);
-                if (child != null) {
-                    child.setLayoutParams(new FrameLayout.LayoutParams(mRecyclerWidth / 2, mRecyclerHeight));
-                }
-            }
-        }, 500);
+//        if (mCycleRolling) {
+//            mShowPosition = mDataSourceList.size() / 2 +
+//                    (Integer.MAX_VALUE / 2 - (Integer.MAX_VALUE / 2 % mDataSourceList.size())); // 计算让让ViewPager默认显示中间的Item
+//        } else {
+//            mShowPosition = mDataSourceList.size() / 2;
+//        }
+//
+//        layoutManager.scrollToPositionWithOffset(mShowPosition, 0); // 如果是循环滚动模式则定位到中间位置
+//        layoutManager.setStackFromEnd(true);
+//
+//        mHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                ViewGroup itemView = (ViewGroup) mRecyclerView
+//                        .getLayoutManager().findViewByPosition(mShowPosition);
+//                if (itemView != null) {
+//                    View child = itemView.getChildAt(0);
+//                    if (child != null) {
+//                        child.setLayoutParams(new FrameLayout.LayoutParams(mRecyclerWidth / 2, mRecyclerHeight));
+//                    }
+//                }
+//            }
+//        }, 100);
     }
 
     // 执行item缩放处理
     protected void performZoomItem() {
-        int position = mAdapter.getCenterPosition();
-        int offset = mAdapter.getItemOffset();
-        float percent = (float) Math.max((float) Math.abs(offset) / mAdapter.getItemWidth(), 0.0001);
 
-        if (position > 0) {
-            ViewGroup liftView = (ViewGroup) mRecyclerView.getLayoutManager().findViewByPosition(position - 1);
+        // 距离下一个item显示的百分比 向右滑（10向1）百分比变小，向左滑（1向10）百分比变大
+        float percent = (float) mAdapter.getItemOffset() / (float) mAdapter.getItemWidth();
+        // 获取最左边显示的item下标
+        int position = mAdapter.getCenterPosition() - 1;
+
+//        float scale = 0.9f;
+//
+//        if (position > 0) {
+//            ViewGroup liftView = (ViewGroup) mRecyclerView.getLayoutManager().findViewByPosition(position);
+//            if (liftView != null && liftView.getChildAt(0) != null) {
+//                liftView.getChildAt(0).setScaleX((1 - scale) * percent + scale);
+//                liftView.getChildAt(0).setScaleY((1 - scale) * percent + scale);
+//            }
+//        }
+//
+//        ViewGroup centerView = (ViewGroup) mRecyclerView.getLayoutManager().findViewByPosition(position + 1);
+//        if (centerView != null && centerView.getChildAt(0) != null) {
+//            centerView.getChildAt(0).setScaleX((scale - 1) * percent + 1);
+//            centerView.getChildAt(0).setScaleY((scale - 1) * percent + 1);
+//        }
+//
+//
+//        if (position < mAdapter.getItemCount() - 1) {
+//            ViewGroup rightView = (ViewGroup) mRecyclerView.getLayoutManager().findViewByPosition(position + 2);
+//            if (rightView != null && rightView.getChildAt(0) != null) {
+//                rightView.getChildAt(0).setScaleX((1 - scale) * percent + scale);
+//                rightView.getChildAt(0).setScaleY((1 - scale) * percent + scale);
+//            }
+//        }
+
+        if (position > 0 && percent <= 0.5f) {
+            ViewGroup liftView = (ViewGroup) mRecyclerView.getLayoutManager().findViewByPosition(position);
             if (liftView != null && liftView.getChildAt(0) != null) {
-                liftView.getChildAt(0).setScaleX(0.1f * percent + 0.1f);
-                liftView.getChildAt(0).setScaleY(0.1f * percent + 0.1f);
+                float scale = 1 - (percent);
+                liftView.getChildAt(0).setScaleX(scale);
+                liftView.getChildAt(0).setScaleY(scale);
             }
         }
 
-        ViewGroup centerView = (ViewGroup) mRecyclerView.getLayoutManager().findViewByPosition(position);
+        ViewGroup centerView = (ViewGroup) mRecyclerView.getLayoutManager().findViewByPosition(position + 1);
         if (centerView != null && centerView.getChildAt(0) != null) {
-            centerView.getChildAt(0).setScaleX(-0.1f * percent + 1);
-            centerView.getChildAt(0).setScaleY(-0.1f * percent + 1);
+            float scale = Math.abs(percent - 1);
+            centerView.getChildAt(0).setScaleX(scale);
+            centerView.getChildAt(0).setScaleY(scale);
         }
 
 
-        if (position < mAdapter.getItemCount() - 1) {
-            ViewGroup rightView = (ViewGroup) mRecyclerView.getLayoutManager().findViewByPosition(position + 1);
+        if (position < mAdapter.getItemCount() - 1 && percent >= 0.5f) {
+            ViewGroup rightView = (ViewGroup) mRecyclerView.getLayoutManager().findViewByPosition(position + 2);
             if (rightView != null && rightView.getChildAt(0) != null) {
-                rightView.getChildAt(0).setScaleX(0.1f * percent + 0.1f);
-                rightView.getChildAt(0).setScaleY(0.1f * percent + 0.1f);
+                float scale = 1 - (percent);
+                rightView.getChildAt(0).setScaleX(scale);
+                rightView.getChildAt(0).setScaleY(scale);
             }
         }
     }
@@ -172,14 +199,12 @@ public class RecyclerGalleryView extends FrameLayout {
                 case RecyclerView.SCROLL_STATE_IDLE:    // 0
                     break;
                 case RecyclerView.SCROLL_STATE_DRAGGING:    // 1
-                    // performZoomItem();
+                    performZoomItem();
                     break;
                 case RecyclerView.SCROLL_STATE_SETTLING:    // 2
-                    // performZoomItem();    // 用户停止拖动后在执行一次，避免出现效果异常。
+                    performZoomItem();    // 用户停止拖动后在执行一次，避免出现效果异常。
                     break;
             }
-
-            Log.e("onScrolled", "滚动距离 " + mRecyclerScrollSize + " -- " + mAdapter.getCenterPosition());
         }
     };
 

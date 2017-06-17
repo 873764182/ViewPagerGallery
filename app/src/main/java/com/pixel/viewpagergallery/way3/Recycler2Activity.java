@@ -22,7 +22,7 @@ public class Recycler2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler2);
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             stringList.add("item " + i);
         }
 
@@ -31,7 +31,7 @@ public class Recycler2Activity extends AppCompatActivity {
         mRecyclerGalleryView.setDataSource(false, stringList, new RecyclerGalleryView.OnPagerCallback() {
             @Override
             public View onCreateView(ViewGroup parent, Object dataSource) {
-                return getLayoutInflater().inflate(R.layout.recycler_item, null);
+                return getLayoutInflater().inflate(R.layout.recycler_item, parent, false);
             }
 
             @Override
