@@ -1,4 +1,4 @@
-package com.pixel.viewpagergallery;
+package com.pixel.viewpagergallery.way1;
 
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -11,11 +11,16 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pixel.viewpagergallery.R;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 实现方式一：直接在Activity里用ViewPager实现。
+ */
 public class MainActivity extends AppCompatActivity {
     private FrameLayout mFrameLayout;
     private ViewPager mViewPager;

@@ -1,4 +1,4 @@
-package com.pixel.viewpagergallery;
+package com.pixel.viewpagergallery.way2;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,11 +7,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pixel.viewpagergallery.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 使用自定义控件,抽离业务无关代码.
+ * 实现方式二：使用自定义控件,抽离业务无关代码.
  */
 public class WidgetActivity extends AppCompatActivity {
 

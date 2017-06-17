@@ -1,4 +1,4 @@
-package com.pixel.viewpagergallery;
+package com.pixel.viewpagergallery.way2;
 
 import android.content.Context;
 import android.os.Handler;

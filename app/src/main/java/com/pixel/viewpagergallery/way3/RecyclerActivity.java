@@ -1,4 +1,4 @@
-package com.pixel.viewpagergallery;
+package com.pixel.viewpagergallery.way3;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,11 +11,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.pixel.viewpagergallery.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 通过RecyclerView实现画廊效果
+ * 实现方式三：通过RecyclerView实现画廊效果
  * <p>
  * http://www.jianshu.com/p/85bf072bfeed 参考
  */

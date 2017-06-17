@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.pixel.viewpagergallery.WidgetActivity">
+    tools:context="com.pixel.viewpagergallery.way2.WidgetActivity">
 
-    <com.pixel.viewpagergallery.PagerGalleryView
+    <com.pixel.viewpagergallery.way2.PagerGalleryView
         android:id="@+id/pagerGalleryView"
         android:layout_width="match_parent"
         android:layout_height="300dp"
