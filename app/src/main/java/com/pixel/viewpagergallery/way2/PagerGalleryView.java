@@ -66,7 +66,7 @@ public class PagerGalleryView extends FrameLayout {
     }
 
     protected void initialize() {
-        if (mDataSourceList == null || mDataSourceList.size() <= 0 || mOnPagerCallback == null) {
+        if (mDataSourceList == null || mOnPagerCallback == null) {
             throw new NullPointerException("数据源与回调接口不能为空,请调用 setDataSourceAndCallback() 设置数据.");
         }
 
