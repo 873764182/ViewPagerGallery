@@ -34,12 +34,12 @@ public class RGalleryView extends RecyclerView {
     private int mCardGalleryWidth;
     //
     private int mCurrentItemPos;
+    //  页面内边距
+    int mPagePadding = 5;
     //
-    int mPagePadding = 15;
-    //
-    int mShowLeftCardWidth = 15;
+    int mShowLeftCardWidth = 50;
     // 两边视图scale
-    private float mScale = 0.9f;
+    private float mScale = 0.8f;
     //
     private Context mContext;
     // 数据源

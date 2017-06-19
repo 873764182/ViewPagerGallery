@@ -7,8 +7,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.pixel.viewpagergallery.R;
+import com.pixel.viewpagergallery.sort.DefaultItemTouchHelpCallback;
+import com.pixel.viewpagergallery.sort.DefaultItemTouchHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Main2Activity extends AppCompatActivity {
@@ -36,5 +39,31 @@ public class Main2Activity extends AppCompatActivity {
                 Toast.makeText(Main2Activity.this, "" + position, Toast.LENGTH_SHORT).show();
             }
         });
+
+//        initSort();
     }
+
+    // 初始化拖动排序 滑动删除
+    private void initSort() {
+        DefaultItemTouchHelper.PackTouchHelper itemTouchHelper = new DefaultItemTouchHelper.PackTouchHelper(listener);
+        itemTouchHelper.attachToRecyclerView(mRGalleryView);
+        itemTouchHelper.setDragEnable(true);
+        itemTouchHelper.setSwipeEnable(true);   // 网格布局时滑动删除无效
+    }
+
+    // 拖动/滑动 监听器 更新数据
+    private final DefaultItemTouchHelpCallback.OnItemTouchCallbackListener listener = new DefaultItemTouchHelpCallback.OnItemTouchCallbackListener() {
+        @Override
+        public boolean onMove(int srcPosition, int targetPosition) {
+            Collections.swap(stringList, srcPosition, targetPosition);
+            mRGalleryView.getAdapter().notifyItemMoved(srcPosition, targetPosition);
+            return true;
+        }
+
+        @Override
+        public void onSwiped(int adapterPosition) {
+            stringList.remove(adapterPosition);
+            mRGalleryView.getAdapter().notifyItemRemoved(adapterPosition);
+        }
+    };
 }
