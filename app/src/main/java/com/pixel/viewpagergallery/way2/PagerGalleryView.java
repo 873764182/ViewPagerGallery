@@ -1,7 +1,6 @@
 package com.pixel.viewpagergallery.way2;
 
 import android.content.Context;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
@@ -57,7 +56,7 @@ public class PagerGalleryView extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        new Handler().postDelayed(new Runnable() {
+        postDelayed(new Runnable() {
             @Override
             public void run() {
                 initialize();
@@ -88,11 +87,14 @@ public class PagerGalleryView extends FrameLayout {
         mPagerAdapter = new ViewPagerAdapter();
         mViewPager.setAdapter(mPagerAdapter);
 
+        int showPosition = 0;
         if (mCycleRolling) {    // 如果是循环滚动 则定位到中间显示
-            int showPosition = mDataSourceList.size() / 2 +
+            showPosition = mDataSourceList.size() / 2 +
                     (Integer.MAX_VALUE / 2 - (Integer.MAX_VALUE / 2 % mDataSourceList.size())); // 计算让让ViewPager默认显示中间的Item
-            mViewPager.setCurrentItem(showPosition, false);
+        } else {
+            showPosition = mDataSourceList.size() / 2;
         }
+        mViewPager.setCurrentItem(showPosition, false);
 
         this.addView(mViewPager);
         this.setOnTouchListener(new OnTouchListener() {

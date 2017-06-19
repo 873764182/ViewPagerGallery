@@ -11,28 +11,21 @@ import com.pixel.viewpagergallery.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 抽离成控件后测试
- */
-@Deprecated
-public class Recycler2Activity extends AppCompatActivity {
-
-    private RecyclerGalleryView mRecyclerGalleryView;
-
+public class Main2Activity extends AppCompatActivity {
+    private RGalleryView mRGalleryView;
     private final List<String> stringList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recycler2);
+        setContentView(R.layout.activity_main2);
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             stringList.add("item " + i);
         }
 
-        mRecyclerGalleryView = (RecyclerGalleryView) findViewById(R.id.recyclerGalleryView);
-
-        mRecyclerGalleryView.setDataSource(false, stringList, new RecyclerGalleryView.OnPagerCallback() {
+        mRGalleryView = (RGalleryView) findViewById(R.id.rGalleryView);
+        mRGalleryView.setDataSource(true, stringList, new RGalleryView.OnPagerCallback() {
             @Override
             public View onCreateView(ViewGroup parent, Object dataSource) {
                 return getLayoutInflater().inflate(R.layout.recycler_item, parent, false);
@@ -40,7 +33,7 @@ public class Recycler2Activity extends AppCompatActivity {
 
             @Override
             public void onItemClick(View item, int position) {
-                Toast.makeText(Recycler2Activity.this, "" + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(Main2Activity.this, "" + position, Toast.LENGTH_SHORT).show();
             }
         });
     }

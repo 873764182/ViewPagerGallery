@@ -21,6 +21,7 @@ import java.util.List;
  * <p>
  * http://www.jianshu.com/p/85bf072bfeed 参考
  */
+@Deprecated
 public class RecyclerActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
 

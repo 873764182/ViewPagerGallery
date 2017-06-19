@@ -26,6 +26,7 @@ import java.util.Map;
  * 基于自定义控件
  */
 
+@Deprecated
 public class RecyclerGalleryView extends FrameLayout {
     // 上下文（Activity）
     private Context mContext;
