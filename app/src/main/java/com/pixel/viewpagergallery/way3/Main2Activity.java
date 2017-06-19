@@ -44,6 +44,7 @@ public class Main2Activity extends AppCompatActivity {
     }
 
     // 初始化拖动排序 滑动删除
+    @Deprecated
     private void initSort() {
         DefaultItemTouchHelper.PackTouchHelper itemTouchHelper = new DefaultItemTouchHelper.PackTouchHelper(listener);
         itemTouchHelper.attachToRecyclerView(mRGalleryView);
