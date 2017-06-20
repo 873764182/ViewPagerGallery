@@ -9,7 +9,14 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
+        android:background="#DDDDDD"
         android:padding="16dp"
-        android:text="title" />
+        android:text="title"
+        android:textStyle="bold" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true" />
 </LinearLayout>
