@@ -1,7 +1,9 @@
 package pixel.aylson.test;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,8 +31,8 @@ public class MainPresenter {
     }
 
     public void refreshDeviceList(final RecyclerView deviceRecyclerView, List<String> deviceList) {
-        for (int i = 0; i < 20; i++) {
-            deviceList.add("场景 " + i);
+        for (int i = 0; i < 10; i++) {
+            deviceList.add("房间 " + i);
         }
         deviceRecyclerView.postDelayed(new Runnable() {
             @Override
@@ -41,7 +43,7 @@ public class MainPresenter {
     }
 
     // 初始化拖动排序 滑动删除
-    public void initSort(final RecyclerView recyclerView, final List list) {
+    public DefaultItemTouchHelper.PackTouchHelper initSort(final RecyclerView recyclerView, final List list) {
         DefaultItemTouchHelper.PackTouchHelper itemTouchHelper = new DefaultItemTouchHelper.PackTouchHelper(
                 new DefaultItemTouchHelpCallback.OnItemTouchCallbackListener() {
                     @Override
@@ -60,5 +62,14 @@ public class MainPresenter {
         itemTouchHelper.attachToRecyclerView(recyclerView);
         itemTouchHelper.setDragEnable(true);
         itemTouchHelper.setSwipeEnable(false);
+        return itemTouchHelper;
+    }
+
+    public List<String> getChildList(View listView, int position) {
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            list.add("设备 - " + i + " - " + position);
+        }
+        return list;
     }
 }
