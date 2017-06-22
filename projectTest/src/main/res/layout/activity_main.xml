@@ -19,6 +19,7 @@
             <android.support.design.widget.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/colorPrimaryDark"
                 app:contentScrim="@color/colorPrimaryDark"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -31,34 +32,33 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@mipmap/ic_launcher" />
+                        android:scaleType="fitCenter"
+                        android:src="@mipmap/ic_launcher"
+                        android:visibility="visible" />
                 </FrameLayout>
 
+                <!-- Toolbar默认带有16dp的左边距 contentInsetStart去除 -->
                 <android.support.v7.widget.Toolbar
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    app:contentInsetStart="0dp"
                     app:layout_collapseMode="pin"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
                     <android.support.v7.widget.ButtonBarLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:visibility="visible">
+                        android:layout_height="match_parent">
 
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="left"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
                             android:padding="16dp"
                             android:text="消息"
                             android:textColor="@color/colorAccent" />
 
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:padding="16dp"
@@ -66,9 +66,8 @@
                             android:textColor="@color/colorAccent" />
 
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
                             android:gravity="right"
                             android:padding="16dp"
                             android:text="添加"
@@ -100,11 +99,13 @@
             app:layout_anchorGravity="bottom|end"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+            <!--android:paddingBottom="?attr/actionBarSize"-->
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/deviceRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="?attr/actionBarSize" />
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp" />
 
         </android.support.v4.widget.NestedScrollView>
 

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -18,12 +18,24 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <!-- 全屏 -->
-    <style name="Dialog_Fullscreen">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:background">@color/colorWhite</item>
-        <item name="android:windowNoTitle">false</item>
-        <item name="android:windowFullscreen">false</item>
-        <item name="android:layout_height">@dimen/fab_margin</item>
+    <style name="Dialog_Fullscreen" parent="AlertDialog.AppCompat">
+        <!--<item name="android:windowBackground">@android:color/transparent</item>-->
+        <!--<item name="android:background">@color/colorWhite</item>-->
+        <!--<item name="android:windowNoTitle">true</item>-->
+        <!--<item name="android:windowFullscreen">false</item>-->
+        <item name="android:windowAnimationStyle">@style/popup_animation</item>
+    </style>
+
+    <!--从下往上-->
+    <style name="popup_animation" parent="@android:style/Animation.Toast">
+        <item name="android:windowEnterAnimation">@anim/popup_dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/popup_dialog_exit</item>
+    </style>
+
+    <!--从上往下-->
+    <style name="popup_animation_below" parent="@android:style/Animation.Toast">
+        <item name="android:windowEnterAnimation">@anim/inputodown</item>
+        <item name="android:windowExitAnimation">@anim/outdowntoup</item>
     </style>
 
 </resources>

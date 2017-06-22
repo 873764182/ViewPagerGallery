@@ -1,6 +1,6 @@
 package pixel.aylson.test;
 
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -16,9 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -152,20 +150,21 @@ public class MainActivity extends AppCompatActivity {
     public class DeviceViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView text;
-        Switch switchView;
+        TextView text2;
         SdListView listView;
 
         public DeviceViewHolder(View itemView) {
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.image);
             text = (TextView) itemView.findViewById(R.id.text);
-            switchView = (Switch) itemView.findViewById(R.id.switchView);
+            text2 = (TextView) itemView.findViewById(R.id.text2);
             listView = (SdListView) itemView.findViewById(R.id.nestedListView);
         }
     }
 
     // 房间设备 Adapter
     public class DeviceAdapter extends RecyclerView.Adapter<DeviceViewHolder> {
+        private boolean open = true;
 
         @Override
         public DeviceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -175,36 +174,46 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final DeviceViewHolder holder, final int position) {
             holder.text.setText(deviceList.get(position));
-            holder.switchView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        holder.listView.setVisibility(View.VISIBLE);
-                    } else {
-                        holder.listView.setVisibility(View.GONE);
-                    }
-                }
-            });
+
+            if (!open) {
+                holder.listView.setVisibility(View.GONE);
+                holder.image.setRotation(0);
+            } else {
+                holder.listView.setVisibility(View.VISIBLE);
+                holder.image.setRotation(90);
+            }
+
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(MainActivity.this, "点击 组 " + position, Toast.LENGTH_SHORT).show();
+                    open = true;
+
+                    if (holder.listView.getVisibility() == View.GONE) {
+                        holder.listView.setVisibility(View.VISIBLE);
+                        holder.image.setRotation(90);
+                    } else {
+                        holder.listView.setVisibility(View.GONE);
+                        holder.image.setRotation(0);
+                    }
                 }
             });
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    Toast.makeText(MainActivity.this, "长按 组 " + position, Toast.LENGTH_SHORT).show();
+                    open = false;
+                    DeviceAdapter.this.notifyDataSetChanged();
                     return true;
                 }
             });
-            List<String> list = mPresenter.getChildList(holder.listView, position);
-            ChildListAdapter adapter = new ChildListAdapter(list);
+            final List<String> list = mPresenter.getChildList(holder.listView, position);
+            final ChildListAdapter adapter = new ChildListAdapter(list);
             holder.listView.setMenu(adapter.getManu());
             holder.listView.setAdapter(adapter);
             holder.listView.setOnMenuItemClickListener(adapter);
             holder.listView.setOnItemClickListener(adapter);
             holder.listView.setOnItemLongClickListener(adapter);
+
+            holder.text2.setText(list.size() + "");
         }
 
         @Override
@@ -271,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
                     .build());
             menu.addItem(new MenuItem.Builder().setWidth(200)//设置宽度
                     .setBackground(new ColorDrawable(Color.YELLOW))
-                    .setText("设置")
+                    .setText("编辑")
                     .setTextColor(Color.GRAY)
                     .setDirection(MenuItem.DIRECTION_RIGHT)
                     //.setIcon(getResources().getDrawable(R.mipmap.ic_launcher, getApplicationContext().getTheme()))
@@ -283,6 +292,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int onMenuItemClick(View v, int itemPosition, int buttonPosition, int direction) {
             Toast.makeText(MainActivity.this, itemPosition + " --- " + buttonPosition + " --- " + direction, Toast.LENGTH_SHORT).show();
+            if (buttonPosition == 1) {
+                showSortView(this, list);
+            }
             return Menu.ITEM_SCROLL_BACK;
         }
 
@@ -293,7 +305,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//            Toast.makeText(MainActivity.this, "长按 " + position, Toast.LENGTH_SHORT).show();
             showSortView(this, list);
             return true;
         }
@@ -303,9 +314,9 @@ public class MainActivity extends AppCompatActivity {
         View view = getLayoutInflater().inflate(R.layout.sirt_view, null);
         Button completeButton = (Button) view.findViewById(R.id.completeButton);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        final AlertDialog dialog = new AlertDialog.Builder(this, R.style.Dialog_Fullscreen).create();
+        final Dialog dialog = new Dialog(this, R.style.Dialog_Fullscreen);
         dialog.setCanceledOnTouchOutside(false);
-        dialog.setView(view);
+        dialog.setContentView(view);
         dialog.show();
 
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
