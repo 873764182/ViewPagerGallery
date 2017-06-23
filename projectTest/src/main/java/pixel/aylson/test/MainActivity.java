@@ -43,14 +43,10 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mSceneRecyclerView;
     private RecyclerView mDeviceRecyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private NestedScrollView mNestedScrollView;
 
     private MainPresenter mPresenter;
     private final List<String> sceneList = new ArrayList<>();
     private final List<String> deviceList = new ArrayList<>();
-
-    private DefaultItemTouchHelper.PackTouchHelper packTouchHelper;
-    private boolean canScrollVertically = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         mSceneRecyclerView = (RecyclerView) findViewById(R.id.sceneRecyclerView);
         mDeviceRecyclerView = (RecyclerView) findViewById(R.id.deviceRecyclerView);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        mNestedScrollView = (NestedScrollView) findViewById(R.id.nestedScrollView);
 
         swipeRefreshLayout.postDelayed(new Runnable() {
             @Override
@@ -106,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         mDeviceRecyclerView.setNestedScrollingEnabled(false);
         mDeviceRecyclerView.setLayoutManager(deviceLayoutManager);
         mDeviceRecyclerView.setAdapter(deviceAdapter);
-        packTouchHelper = mPresenter.initSort(mDeviceRecyclerView, deviceList);
+        mPresenter.initSort(mDeviceRecyclerView, deviceList);
         mPresenter.refreshDeviceList(mDeviceRecyclerView, deviceList);
     }
 

@@ -1,4 +1,4 @@
-package com.pixel.viewpagergallery.way2;
+package pixel.aylson.test.widget;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
